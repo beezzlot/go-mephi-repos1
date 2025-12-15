@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"strconv"
 	"strings"
@@ -33,11 +34,9 @@ func main() {
 			continue
 		}
 
-		data := make([]byte, 512)
-		n, err := resp.Body.Read(data)
+		data, err := io.ReadAll(resp.Body)
 		resp.Body.Close()
-
-		if n == 0 {
+		if err != nil {
 			fails++
 			if fails >= 3 {
 				fmt.Println("Unable to fetch server statistic")
@@ -46,7 +45,16 @@ func main() {
 			continue
 		}
 
-		line := strings.TrimSpace(string(data[:n]))
+		if len(data) == 0 {
+			fails++
+			if fails >= 3 {
+				fmt.Println("Unable to fetch server statistic")
+			}
+			time.Sleep(10 * time.Second)
+			continue
+		}
+
+		line := strings.TrimSpace(string(data))
 		parts := strings.Split(line, ",")
 
 		if len(parts) != 7 {
@@ -87,7 +95,7 @@ func main() {
 		if nums[1] > 0 {
 			memPct := (nums[2] / nums[1]) * 100
 			if memPct > 80 {
-				if memPct >= 100 {
+				if memPct >= 99.5 {
 					fmt.Printf("Memory usage too high: 100%%\n")
 				} else {
 					fmt.Printf("Memory usage too high: %.0f%%\n", memPct)
