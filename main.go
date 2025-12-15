@@ -95,7 +95,7 @@ func main() {
 		if nums[1] > 0 {
 			memPct := (nums[2] / nums[1]) * 100
 			if memPct > 80 {
-				fmt.Printf("Memory usage too high: %v%%\n", int(memPct+0.5))
+				fmt.Printf("Memory usage too high: %v%%\n", int(memPct))
 			}
 		}
 
@@ -107,22 +107,20 @@ func main() {
 			}
 		}
 
-		if nums[5] > 0 {
-			netUsage := nums[6]
-			netCapacity := nums[5]
-			if netCapacity > 0 && netUsage > 0 {
-				usageRatio := netUsage / netCapacity
-				if usageRatio > 0.9 {
-					freeBytes := netCapacity - netUsage
-					if freeBytes < 0 {
-						freeBytes = 0
-					}
-					freeMbits := freeBytes * 8 / 1000000
-					fmt.Printf("Network bandwidth usage high: %v Mbit/s available\n", int(freeMbits))
-				}
-			}
-		}
-
+if nums[5] > 0 {
+    netUsage := nums[6]
+    netCapacity := nums[5]
+    if netCapacity > 0 && netUsage > 0 {
+        usageRatio := netUsage / netCapacity
+        if usageRatio > 0.9 {
+            freeMbits := (netCapacity - netUsage) / 1000000
+            if freeMbits < 0 {
+                freeMbits = 0
+            }
+            fmt.Printf("Network bandwidth usage high: %v Mbit/s available\n", int(freeMbits))
+        }
+    }
+}
 		time.Sleep(10 * time.Second)
 	}
 }
