@@ -81,13 +81,17 @@ func main() {
 		fails = 0
 
 		if nums[0] > 30 {
-			fmt.Printf("Load Average is too high: %v\n", nums[0])
+			fmt.Printf("Load Average is too high: %.0f\n", nums[0])
 		}
 
 		if nums[1] > 0 {
 			memPct := (nums[2] / nums[1]) * 100
 			if memPct > 80 {
-				fmt.Printf("Memory usage too high: %v%%\n", memPct)
+				if memPct >= 100 {
+					fmt.Printf("Memory usage too high: 100%%\n")
+				} else {
+					fmt.Printf("Memory usage too high: %.0f%%\n", memPct)
+				}
 			}
 		}
 
@@ -95,7 +99,7 @@ func main() {
 			diskPct := (nums[4] / nums[3]) * 100
 			if diskPct > 90 {
 				freeMb := (nums[3] - nums[4]) / (1024 * 1024)
-				fmt.Printf("Free disk space is too low: %v Mb left\n", freeMb)
+				fmt.Printf("Free disk space is too low: %.0f Mb left\n", freeMb)
 			}
 		}
 
@@ -103,7 +107,7 @@ func main() {
 			netPct := (nums[6] / nums[5]) * 100
 			if netPct > 90 {
 				freeMbit := (nums[5] - nums[6]) * 8 / (1024 * 1024)
-				fmt.Printf("Network bandwidth usage high: %v Mbit/s available\n", freeMbit)
+				fmt.Printf("Network bandwidth usage high: %.0f Mbit/s available\n", freeMbit)
 			}
 		}
 
