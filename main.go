@@ -111,6 +111,9 @@ func main() {
 			netPct := (nums[6] / nums[5]) * 100
 			if netPct > 90 {
 				freeMbit := (nums[5] - nums[6]) * 8 / (1024 * 1024)
+				if freeMbit < 0 {
+					freeMbit = 0
+				}
 				fmt.Printf("Network bandwidth usage high: %v Mbit/s available\n", int(freeMbit))
 			}
 		}
